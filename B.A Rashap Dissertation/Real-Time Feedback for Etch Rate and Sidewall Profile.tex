@@ -1,0 +1,138 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{fourier, erewhon, cabin}
+\usepackage[english]{babel}
+\usepackage{float}
+\usepackage{titletoc}
+\usepackage{relsize}
+%\usepackage[margin=1.25in]{geometry}
+\usepackage{lipsum}
+\usepackage[top=1.5in, left=1.25in, bottom=1.75in, right=1.25in]{geometry}
+\usepackage{titlesec}
+\usepackage[toc,page]{appendix}
+\usepackage{tocloft}
+\usepackage{comment}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{blindtext}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+	language=Matlab,
+	basicstyle=\ttfamily,
+	backgroundcolor=\color{lightgray!25},
+	breaklines=true,
+	columns=fullflexible,
+	frame=single,
+	commentstyle=\color{teal},
+	identifierstyle=\textbf,
+	keywordstyle=\color{magenta},
+	numbers=left,
+	numberstyle=\footnotesize\sffamily,
+	showstringspaces=false
+}
+
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries\centering}{\centering\chaptertitlename\ \thechapter}{15pt}{\huge}
+\titlespacing*{\chapter} 
+{0pt}{15pt}{15pt}
+
+\addto\captionsenglish{\renewcommand*\contentsname{\centerline{Table of contents}}}
+
+\graphicspath{{C:/Users/User/OneDrive - Seattle University/Documents/Latex/Dissertation/Figures}}
+
+\newcommand\listappendixname{List of Appendices}
+\newcommand\appcaption[1]{%
+	\addcontentsline{app}{chapter}{#1}}
+\makeatletter
+\newcommand\listofappendices{%
+	\chapter*{\listappendixname}\@starttoc{app}}
+\makeatother
+	
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\renewcommand*\contentsname{Table of Contents}
+\renewcommand{\contentsname}{\centering Contents}
+\newcommand\Chapter[2]{\chapter
+	[#1\hfil\hbox{}\protect\linebreak{\itshape#2}]%
+	{#1\\[2ex]\Large\itshape#2}%
+}
+\newlength{\bracewidth}
+
+\newcommand{\myunderbrace}[2]{\settowidth{\bracewidth}{$#1$}#1\hspace*{-1\bracewidth}\smash{\underbrace{\makebox{\phantom{$#1$}}}_{#2}}}
+
+%\begin{comment}
+\renewcommand{\cftchapdotsep}{\cftdotsep} % dots after chapter entries
+\setlength{\cftchapnumwidth}{8em} % increase space for chapter numbers
+\renewcommand{\cftchappresnum}{CHAPTER } % put this before chapter numbers
+
+ 
+
+
+\begin{document}
+		
+	\pagestyle{empty}
+	
+	\input{title}
+		
+	\pagenumbering{roman}
+	\stepcounter{page}
+	
+	\input{Dedication}
+	
+	\newpage
+	
+	\input{ACKNOWLEDGEMENTS}
+	
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\listoffigures
+	
+	\newpage
+	
+	\listoftables
+	
+	\newpage
+	
+	\listofappendices
+	
+	\clearpage
+	
+	\pagenumbering{arabic}
+	
+	\input{Chapter_1}
+	
+	\input{Chapter_2}
+	
+	\input{Chapter_3}
+	
+	\input{Chapter_4}
+	
+	\input{Chapter_5}
+	
+	\input{Chapter_6}
+	
+	\begin{appendices}
+
+		\input{Appendix_A}
+		
+		\input{Appendix_B}
+		
+	\end{appendices}
+
+	\input{bibliography}
+	
+\end{document}

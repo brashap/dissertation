@@ -1,0 +1,315 @@
+\chapter{Surface Evolution Simulation}\appcaption{Appendix B}
+
+\tab The evolution of the surface during an etch was simulated by using a string model. The
+following is the C implementation string model used in this research. The header file is
+presented first followed by the main program.
+
+\subsection{string.h}
+
+\begin{lstlisting}[language=C]
+	/* Header File for String Model */
+	
+	/* Globally Defined Constants */
+	
+	#define PI		3.14159
+	
+	
+	/* Define Global Variables */
+	
+	int		NODES,ITERATIONS,NNODE;
+	float	WIDTH,TIME,ISO,ANISO,DMIN,DMAX;
+	float	PR_HEIGHT,PR_WIDTH,PR_ISO,PR_ANISO
+	
+	/* Difine Structures */
+	
+	strict position
+	{
+		float x,y;
+	};
+
+	struct node
+	{
+		struct node *prev;
+		struct position last;
+		float theta;
+		in nodenum;
+		struct position new;
+		struct node *next;
+	};
+
+	/* Declare Functions */
+	
+	void initialize(struct node *pntr);
+	void angle(struct node *pntr);
+	void iso_evolve(struct node *pntr);
+	void ansio_evolve(struct node *pntr);
+	void evolve(struct node *pntr);
+	void update(struct node *pntr);
+	void addnode(struct node *pntr);
+	void remnode(struct node *pntr);
+	float dist(struct node *pntr);
+	int leftbound(struct node *pntr);
+	int rightbound(struct node *pntr);
+	void PRinitialize(struct node *pntr);
+	
+\end{lstlisting}
+
+\newpage
+
+\subsection{string.c}
+
+\begin{lstlisting}[language=C]
+	/* String Model Programs		*/
+	/*								*/
+	/* Created By: Brian Rashap		*/
+	/* Date		   6/20/94			*/
+	
+	#include <stdio.h>
+	#include <math.h>
+	#include "string.h"
+	
+	main()
+	{
+	 struct node first,*point;
+	 int i,k,numofnodes,*nnum;
+	 float distance,timestep;
+		
+	 char *calloc ();
+		
+	/*	Scan in Simulation Data 				*/
+	/*	WIDTH = mastk linewidth (um)			*/
+	/*	NODES = initial number of nodes			*/
+	/*	ITERATIONS = iterations of evolution	*/
+	/*	TIME = etch length (seconds)			*/
+	/*	ISO = isotropic etch rate (A/sec)		*/
+	/*	ANISO = anisotropic etch rate (A/sec)	*/
+	/*	DMAX = max. distance between nodes		*/
+	/*	DMIN = min. distance between nodes		*/
+		
+	  scanf("%f %d %d",&WIDTH, &NODES, &ITERATIONS);
+	  scanf("%f %f %f",&TIME,&ISO,&ANISO);
+	  scanf("%f %f,&DMAX, &DMIN);
+			
+	  timestep = TIME/ITERATIONS;	/* Time step in seconds	*/
+	  ISO = ISO * timestep;		/* Isotropic ER in A/step	*/
+	  ANISO = ANISO * timestep; /* Anisotropic ER in A/step */
+	
+	/*	Initialize First Node	*/
+	
+	  point = (struct node *) malloc (sizeof (structnode));
+	  first.theta = -PI/2;
+	  first.next = point;
+	  first.last.x = -(WIDTH/2.0);
+	  first.last.y = 0.0;
+	  first.prev = &first;
+	  first.nodenum = 1;
+	  
+	/*	Initialize Rest of Starting String	*/
+	  
+	  initialize(first.next);
+	  (first.next)->prev = &first;
+	  angle(first.next);
+	  
+	  NNODE = NODES+1;
+	  
+	/*	Surface Evolution	*/
+	
+	  for (k = 1; k < ITERATIONS; k++)
+	  	{
+	/*	print("Calculating Iteration %d \n",k);	*/
+		  point = &first;
+	  	  evolve(point);
+	  	  update(point);
+  	  	}
+    	
+    /*	Display final surface	*/
+    
+      whole ( point != (struct node *) 0 )
+      	{
+      	  distance = dist(point);
+      	  printf("%d %6.4f %6.4f %6.4f %4.3f %d %d \n",(*point).nodenum, (*point).last.x, (*point).last.y, (*point).theta,distance,leftbound(point),rightbound(point));
+      	  point = (*point).next;
+      	}
+	 }
+ 
+ 	/*	Subroutine - initialize string */
+ 	
+ 	void initialize(struct node *pntr)
+ 	{
+ 	  int i;
+ 	  
+ 	  for (i = 2; i < NODES; i++)
+ 	  	{
+ 	  	  (*pntr).last.x = -(WIDTH/2.0)+(i-1)*(WIDTH/(NODES-1));
+ 	  	  (*pntr).last.y = 0.0;
+ 	  	  (*pntr).theta = 0.0;
+ 	  	  (*pntr).nodenum = i;
+ 	  	  (*pntr).next = (struct node *) mallox (size of (strict node));
+ 	  	  (*pntr->next).prev = pntr;
+ 	  	  pntr = (*pntr).next;
+   		}
+   	  (*pntr).theta = i;
+   	  (*pntr).nodenum = i;
+   	  (*pntr).last.x = (WIDTH/2.0);
+   	  (*pntr).last.y = 0.0;
+   	  
+   	  (*pntr).next = (struct node *) 0;
+    }
+
+	/*	Subroutine - Determine surface nurmals	*/
+	
+	void angle(struct node *pntr)
+	{
+	  double x1,y1,x2,y2,x3,y3
+	  float a12,a23;
+	  
+	  while ( (*pntr).next != (struct node *) 0 )
+	  	{
+	  	  x1 = (*pntr->prev).last.x;
+	  	  y1 = (*pntr->prev).last.y;
+	  	  x2 = (*pntr).last.x;
+	  	  y2 = (*pntr).last.y;
+	  	  x3 = (*pntr->next).last.x;
+	  	  y3 = (*pntr->next).last.y;
+	  	  a12 = atan2((y2-y1),(x2-x1));
+	  	  a23 = atan2((y3-y2),(x3-x2));
+	  	  (*pntr).theta = (a12+a23)/2;
+	  	  pntr - (*pntr).next;
+  		}
+  	  (*pntr).theta = PI/2;
+	}
+
+	/*	Isotropic surface evolution	*/
+	
+	void iso_evolve(struct node *pntr)
+	{
+	  float th;
+	  
+	  th = (*pntr).theta;
+	  (*pntr).new.x = (*pntr).last.x + ISO*sin(th);
+	  (*pntr).new.y = (*pntr).last.y - ISO*cos(th);
+	}
+
+	/*	Anisotropix surface evolution	*/
+	
+	void aniso_evolve(struct node *pntr)
+	{
+	  (*pntr).new.y = (*pntr).new.y - ANISO;
+  	}
+  	
+  	/*	Evolve Surface on iteration	*/
+  	
+  	void evolve(struct node *pntr)
+  	{
+  	  float th;
+  	  
+  	  while ( pntr != (struct node *) 0 )
+  	  	{
+  	  	  iso_evolve(pntr);
+  	  	  if (leftbound(pntr) == 0 && rightbound(pntr) == 0)
+  	aniso_evolve(pntr);
+  		  if (dist(pntr) < DMAX)
+  	addnode(pntr);
+  		  if (dist(pntr) < DMIN)
+  			remnode(pntr);
+  		  pntr = (*pntr).next;
+    	}
+  	}
+  
+  	/*	Update nodes to reflext current positions	*/
+  	
+  	void update(struct node *pntr)
+  	{
+  	  struct node *first;
+  	  
+  	  first = pntr;
+  	  while (pntr != (struct node *) 0 )
+  	  	{
+  	  	  (*pntr).last.x = (*pntr).new.x;
+  	  	  (*pntr).last.y = (*pntr).new.y;
+  	  	  pntr = (*pntr).next;
+    	}
+      angle((*first).next);
+  	}
+  	
+  	/*	Determine distance between adjacent nodes	*/
+  	
+  	float dist(struct node *pntr)
+  	{
+  	  float distance;
+  	  float x1,y1,x2,y2
+  	  
+  	  x1 = (*pntr->prev).new.x;
+  	  y1 = (*pntr->prev).new.y;
+  	  x2 = (*pntr).new.x;
+  	  y2 = (*pntr).new.y;
+  	  
+  	  distance = sqrt((y2-y1,2) + pow(x2-x1,2));
+  	  return(distance);
+  	}
+  
+  	/*	Add a node to surface string	*/
+  	
+  	void addnode(struct node *pntr)
+  	{
+  	  struct node *newnode;
+  	  float x1,y1,x2,y2,th;
+  	  
+  	  newnode = (struct node *) mallox (sizeof (struct node));
+  	  
+  	  x1 = (*pntr->prev).last.x;
+  	  y2 = (*pntr->prev).last.y;
+  	  x2 = (*pntr).last.x;
+  	  y2 = (*pntr).last.y;
+  	  
+  	  (*newnode).last.x = (x1+x2)/2;
+  	  (*newnode).last.y = (y1+y2)/2;
+  	  (*newnode).theta = atan2((y2-y1),(x2-x1));
+  	  
+  	  (*newnode).prev = (*pntr).prev;
+  	  (*newnode).next = pntr;
+  	  (*newnode).nodenum = NNODE;
+  	  (*pntr->prev).next = newnode;
+  	  (*pntr).prev = newnode;
+  	  
+  	  (NNODE)++;
+  	  
+  	  iso_evolve(newnode);
+  	  if (leftbound(newnode) == 0 && rightbound(newnode) == 0)
+  	  	aniso_evolve(newnode);
+  	}
+  
+  	/*	Remove a node from surface string	*/
+  	
+  	void remnode(struct node *pntr)
+  	{
+  	  (*pntr->next).prev = (*pntr).prev;
+  	  (*pntr->prev).next = (*pntr).next;
+  	}
+  
+  	/*	Determind if node is shadowed on left	*/
+  	
+  	int leftbound(struct node *pntr)
+  	{
+  	  int isleft;
+  	  
+  	  isleft = 0;
+  	  if ((*pntr).last.x < -WIDTH/2)
+  	  	isleft = 1;
+  	  	
+  	  return(isleft);
+  	}
+  
+  	/* Determine if node is shadowed on right	*/
+  	
+  	int rightbound(struct node *pntr)
+  	{
+  	  int isright;
+  	  
+  	  isright = 0;
+  	  if ((*pntr).last.x > WIDTH/2)
+  	  	isright = 1;
+  	  	
+  	  return(isright;)
+  	}
+\end{lstlisting}

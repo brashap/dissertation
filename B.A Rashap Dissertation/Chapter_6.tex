@@ -1,0 +1,124 @@
+\setstretch{1.5}
+\chapter{Conclusion}
+
+\tab From this dissertation, we have concluded that real-time feedback control does provide
+the potential ability to achieve tighter control over microelectronic fabrication processes.
+This has been shown by applying feedback control to the reactive ion etching process, an
+important fabrication step. Because \textit{in situ} sensors were unavailable for measuring etch characteristics, we approached the control problem by regulating the plasma environment
+in which the etch is performed. The control strategy was based on the hypothesis that,
+by better regulating characteristics of the plasma, tighter control over the etch is obtained.
+The first phase of our work validated this approach. Feedback control was used to regulated
+the plasma properties, which in turn allowed us to reject the effects of disturbances upon
+the wafer etch process. This ability was demonstrated consistently over a period of several
+months. In the second phase of the work, this same strategy was applied to controlling sidewall profile. It was shown that sidewall profiles can be represented as etch rate components, which themselves can be related to plasma characteristics.
+
+It was also concluded that the ability to obtain the benefits of feedback control depends
+strongly upon the control infrastructure: sensors, actuators, control-oriented models, and
+data acquisition/control software and hardware. The ability to achieve tighter process
+control is dependent on the quality of this infrastructure. Only those disturbances which
+can be sensed or modeled and effected by the actuators can be attenuated by feedback
+control.
+
+A detailed summary of the specific accomplishments of this dissertation is presented in
+the following section.
+
+\section{Summary of work}
+
+\tab The Applied Materials Precision Etch 8300 used in this research had to be modified
+for implementation of real-time feedback control. A number of actuators were upgraded to
+provide more control authority and better repeatability. In addition, two custom sensors
+were added to the system to allow the estimation of fluorine concentration and the measurement of \textit{in situ} etch rate. The fluorine concentration estimate was based on optical emission spectroscopy using a technique known as actinometry. The etch rate was measured using laser interferometry; though this measurement was not available for feedback control, the data was post-processed to determine etch rate after the etch was completed.
+
+Dynamic models of the plasma generation process were empirically determined. Step
+changes in the settings of each input were individually made and the effect on the plasma
+properties recorded. Transfer functions were then identified for each input-output pair. The
+fidelity of this model was investigated by simultaneously applying PRBS to both inputs. The
+identified model accurately predicted the response of the system to the PRBS inputs. These
+models were then used to design real-time feedback controller for the plasma generation
+process. This controller was used to regulate $\text{V}_{bias}$ and fluorine concentration during etches.
+
+The main goal of this dissertation was to show that real-time feedback control improved
+the quality of the reactive ion etching process. The plasma generation process controller was compared to standard industrial practice (controlling only pressure) in its ability to reject
+disturbances to etch rate. Four types of disturbances were used for this comparison; 1) a wall
+disturbance, 2) the loading effect, 3) an oxygen disturbance, and 4) a power disturbance. In
+each of the cases, the plasma generation process controller was more effective in attenuating
+the affect of these disturbances on etch rate.
+
+A strategy for sidewall profile control was then developed based on the etch decomposition. In this strategy, a string model simulation is used to determine the isotropic and
+anisotropic etch rate components that will produce a desired sidewall profile. The plasma
+characteristics necessary to generate these etch rate components are then determined using
+a response surface. Finally, the real-time feedback controller is used to regulate the plasma
+to these condition during an etch. In this dissertation, an etch study is performed to show
+the feasibility of this strategy. First, oxygen was added to the $\text{CF}_{4}$ chemistry to allow independent control of three plasma properties ($\text{V}_{bias}$, pressure, and fluorine concentration). Next, a real-time controller was designed based on an empirical model of the $\text{CF}_{4}/\text{O}_{2}$ plasma generation process. This controller was used to regulate the plasma properties to constant values during the etching of a polysilicon layer masked with nickel. Finally, it was shown how a string model simulation could be used to extract the isotropic and anisotropic etch rate components from the resulting sidewall profile.
+
+\section{Future Directions}
+
+\tab This research has shown that the use of real-time feedback control has the potential for
+improving the quality of a reactive ion etching process. There are a number of directions
+in which this work can be extended. A few of these are suggested in the following sections.
+
+\subsection{Long Term Etch Study}
+
+\tab Throughout this research, etch experiments were always performed in sets that spanned
+only a few days. This was because the ratio between the gains of each channel of the optical
+emission spectroscopy system varied with time; therefore making it difficult to compare
+fluorine concentration estimates taken even just weeks apart. Work is in progress towards
+developing a technique to calibrate the gain of the actinometry system and thus allow
+comparison of fluorine concentration measurements over time. This calibration procedure
+should allow a long term etch study to compare the variance of etches performed using
+our real-time control strategy to those performed using only pressure control. In addition,
+the open loop process has changed since our original work in ways th at do not show up in
+our models or sensor measurements. This fact has caused the performance of the feedback
+controller to deteriorate. Work is currently in process to understand possible sources of this
+process change. This work, along with the optical calibration procedure, should allow an
+evaluation of the ability of real-time feedback control to decrease long term process variance.
+
+
+\subsection{Implementation of Sidewall Profile Control Strategy}
+
+\tab There is still a significant amount of work that needs to be done towards implementing
+the sidewall profile control strategy presented in Chapter 5. The next step in the development of this strategy is to repeat the etch experiments at a range of different plasma
+conditions. The string model can then be used to determine the etch rate components
+corresponding to these conditions. From this data, a response surface can be developed to
+relate plasma characteristics to isotropic and anisotropic etch rate components. It remains
+to be seen how the string model simulation and response surface might be used to translated
+a desired sidewall profile into a set of plasma properties.
+
+Once this strategy has been shown to work using a nickel masking layer, it will be
+important to extend it to a more industrially relevant mask, such as photoresist. In using
+photoresist, it will be important to understand polymerization mechanisms from the plasma,
+as photoresist erosion will be a source of carbon near the wafer surface. In addition, the
+string model simulation will need to be modified to account for mask erosion. This can be
+done by treating the photoresist as a separate string and simulating its evolution during
+the etch.
+
+
+\subsection{Additional Plasma Sensors}
+
+\tab In Chapter 5, it was shown that a third plasma parameter could be independently
+controlled by adding oxygen to the gas chemistry. At this time, no attem pts have been
+made to control, or even measure, the other two characteristics: ion flux and polymer
+precursor concentration. As was pointed out in Section 1.2.2, the ion enhanced etch rate is
+proportional to ion flux. An Advanced Energy RFZ 60 Plasma Impedance Probe will soon
+be installed on our AME-8300. It is possible that this probe will provide an estimate of
+ion flux. In addition to ion flux, polymer deposition has a strong influence on the net etch
+rate and is important in determining sidewall profile. It has been found that the polymer
+deposition rate can be related to optical emission from $\text{CF}_{2}$ [78]. It may be possible to develop an \textit{in situ} sensor for polymerization based on the concentration of precursors such as $\text{CF}_{2}$. Real-time measurement of both of these plasma characteristics will greatly improve our understanding of the etching process and possibly our ability to control it.
+
+
+\subsection{Other Etch Chemistries}
+
+\tab This research has been performed using a $\text{CF}_{4}$ plasma chemistry. Though this chemistry has been the most throughly explored in the literature, there are other etch chemistries that might be better suited for real-time control. While F atoms readily etch Si at room temperature. Cl atoms are less reactive and Br atoms will not spontaneously etch silicon at all [21]. For chlorine and bromine chemistries ion bombardment has a stronger influence on the resulting etch characteristics than it does in fluorine etching. It might be possible to saturate the plasma with bromine radicals and control the etch exclusively through the ions. If the ion flux and energy can be electrically measured, this may simplify our control task by allowing us to avoid the uncertainty in the optical measurements, at the expense of uncertainty in the electrical measurements.
+
+\subsection{High Density Plasma Sources}
+
+\tab In capacitively coupled plasmas, such as those used for reactive ion etching, the ion flux
+and energy can not be independently controlled [67]. Therefore, variations in both ion flux
+and energy may limit our ability to control the etching process. This may be overcome
+by using a high density plasma source, such as an ECR or an inductively coupled source.
+These sources use microwave or inductively coupled rf power to generate the radicals and
+ions in the bulk plasma, and a capacitively coupled rf source to control ion energy. T his
+allows independent control of both ion flux and energy. However, the use of a high density
+plasma may complicate the wafer etch process. For example, while in low density plasmas
+ions do not significantly participate in chemical reactions on the surface, this is not the case for high density plasmas. In these plasmas the etch yield can be as low as 0.2 Si atoms/ion. This corresponds to a fluorine requirement of less than 1 F atom/ion [20], which can be satisfied by the ions. Therefore, chemical reactions involving the ions become important. In addition, the estimate of reactive species by actinometry is complicated by the dilution of argon being dependent of plasma conditions [58].
+
